@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+          <div class="card" style="width: 18rem;">
+            <div class="card-header">
+              Order {{ order.id }} - ${{ order.amount_paid }}
+            </div>
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+    Email: {{ order.email }} <br/>
+    {% if order.date_shipped %}
+      Date Shipped: {{ order.date_shipped }}
+    {% else %}
+      Date Ordered: {{ order.date_ordered }}
+    {% endif %}
+    <br/>
+    {{ order.full_name }}
+    <pre>{{ order.shipping_address }} <br/>
+    </pre>
+    {% for item in items %}
+      {{ item.product }} - {{ item.quantity }} - ${{ item.price }}
+    {% endfor %}
+    <br/><br/>
+
+    {% if not order.shipped %}
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="shipping_status" value="true">
+      <button type = "submit" class = "btn btn-success">Mark as Shipped</button>
+    </form>
+
+    {% else %}
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="shipping_status" value="false">
+      <button type = "submit" class = "btn btn-danger">Mark as Not Shipped</button>
+    </form>
+
+    {% endif %}
+
+
+
+
+  </div>
+</div>
+     <br/><br/>
+
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
